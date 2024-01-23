@@ -100,24 +100,24 @@ dependencies {
     implementation("androidx.paging:paging-compose:1.0.0-alpha14")
 
     // KotlinX Serialization
-    //implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
     // DataStore Preferences
-    //implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
 
     // Horizontal Pager and Indicators - Accompanist
-    //implementation("com.google.accompanist:accompanist-pager:$0.21.2-beta")
-    //implementation("com.google.accompanist:accompanist-pager-indicators:$0.21.2-beta")
+    implementation("com.google.accompanist:accompanist-pager:0.23.1")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.23.1")
 
     // Swipe to Refresh - Accompanist
-    //implementation("com.google.accompanist:accompanist-swiperefresh:$0.21.2-beta")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.21.2-beta")
 
     // System UI Controller - Accompanist
-    //implementation("com.google.accompanist:accompanist-systemuicontroller:$0.21.2-beta")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.21.2-beta")
 
     // Palette API
-    //implementation("androidx.palette:palette-ktx:1.0.0")
+    implementation("androidx.palette:palette-ktx:1.0.0")
 }
 
 kapt {
