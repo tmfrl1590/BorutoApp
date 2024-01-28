@@ -9,8 +9,8 @@ import com.json.borutoapp.domain.model.HeroRemoteKey
 @Dao
 interface HeroRemoteKeyDao {
 
-    @Query("select * from hero_remote_key_table where id = :id")
-    suspend fun getRemoteKey(id: Int): HeroRemoteKey?
+    @Query("select * from hero_remote_key_table where id = :heroId")
+    suspend fun getRemoteKey(heroId: Int): HeroRemoteKey?
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

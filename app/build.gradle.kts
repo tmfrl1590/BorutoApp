@@ -85,6 +85,7 @@ dependencies {
     //Okhttp3
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
 
     // coil
     implementation("io.coil-kt:coil-compose:2.1.0")

@@ -43,7 +43,7 @@ fun SplashScreen(
         degrees.animateTo(
             targetValue = 360f,
             animationSpec = tween(
-                durationMillis = 1000,
+                durationMillis = 3000,
                 delayMillis = 200,
             )
         )
@@ -60,6 +60,7 @@ fun SplashScreen(
 
 @Composable
 fun Splash(degrees: Float){
+
     if(isSystemInDarkTheme()){
         Box(
             modifier = Modifier

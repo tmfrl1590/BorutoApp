@@ -1,11 +1,33 @@
 package com.json.borutoapp.presentation.screens.home
 
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.json.borutoapp.presentation.common.ListContent
 
 @Composable
 fun HomeScreen(
-    navController: NavController
+    navController: NavHostController,
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
+
+    val allHeroes = homeViewModel.getAllHeroes.collectAsLazyPagingItems()
+
+    Scaffold(
+        topBar = {
+            HomeTopBar(
+                onSearchClicked = {
+                }
+            )
+        },
+    ){
+        it
+        ListContent(
+            heroes = allHeroes,
+            navController = navController,
+        )
+    }
 
 }

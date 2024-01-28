@@ -2,6 +2,8 @@ package com.json.borutoapp.util
 
 object Constants {
 
+    const val BASE_URL = "http://192.168.219.181:8081"
+
     const val DETAILS_ARGUMENT_KEY = "heroId"
 
     const val BORUTO_DATABASE = "boruto_database"
@@ -14,4 +16,6 @@ object Constants {
 
     const val ON_BOARDING_PAGE_COUNT = 3
     const val LAST_ON_BOARDING_PAGE = 2
+
+    const val ITEMS_PER_PAGE = 3
 }
