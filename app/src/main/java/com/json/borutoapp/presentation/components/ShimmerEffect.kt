@@ -52,7 +52,7 @@ fun ShimmerEffect() {
 
 @Composable
 fun AnimatedShimmerItem() {
-    val transition = rememberInfiniteTransition()
+    val transition = rememberInfiniteTransition(label = "")
     val alphaAnim by transition.animateFloat(
         initialValue = 1f,
         targetValue = 0f,
@@ -62,7 +62,9 @@ fun AnimatedShimmerItem() {
                 easing = FastOutLinearInEasing
             ),
             repeatMode = RepeatMode.Reverse
-        ))
+        ),
+        label = ""
+    )
     ShimmerItem(alpha = alphaAnim)
 }
 
@@ -72,11 +74,13 @@ fun ShimmerItem(alpha: Float) {
         modifier = Modifier
             .fillMaxWidth()
             .height(HERO_ITEM_HEIGHT),
-        color = if (isSystemInDarkTheme()) Color.Black else ShimmerLightGray,
+        color = if (isSystemInDarkTheme())
+            Color.Black else ShimmerLightGray,
         shape = RoundedCornerShape(size = LARGE_PADDING)
     ) {
         Column(
-            modifier = Modifier.padding(MEDIUM_PADDING),
+            modifier = Modifier
+                .padding(all = MEDIUM_PADDING),
             verticalArrangement = Arrangement.Bottom
         ) {
             Surface(
@@ -84,43 +88,33 @@ fun ShimmerItem(alpha: Float) {
                     .alpha(alpha = alpha)
                     .fillMaxWidth(0.5f)
                     .height(NAME_PLACEHOLDER_HEIGHT),
-                color = if (isSystemInDarkTheme()) ShimmerDarkGray else ShimmerMediumGray,
-                shape = RoundedCornerShape(size = MEDIUM_PADDING)
-            ) {
-
-            }
-
+                color = if (isSystemInDarkTheme())
+                    ShimmerDarkGray else ShimmerMediumGray,
+                shape = RoundedCornerShape(size = SMALL_PADDING)
+            ) {}
             Spacer(modifier = Modifier.padding(all = SMALL_PADDING))
-
-            repeat(3){
+            repeat(3) {
                 Surface(
                     modifier = Modifier
-                        .alpha(alpha = alpha)
                         .fillMaxWidth()
+                        .alpha(alpha = alpha)
                         .height(ABOUT_PLACEHOLDER_HEIGHT),
-                    color = if (isSystemInDarkTheme()) ShimmerDarkGray else ShimmerMediumGray,
+                    color = if (isSystemInDarkTheme())
+                        ShimmerDarkGray else ShimmerMediumGray,
                     shape = RoundedCornerShape(size = SMALL_PADDING)
-                ) {
-
-                }
-
+                ) {}
                 Spacer(modifier = Modifier.padding(all = EXTRA_SMALL_PADDING))
             }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-            ){
+            Row(modifier = Modifier.fillMaxWidth()) {
                 repeat(5){
                     Surface(
                         modifier = Modifier
                             .alpha(alpha = alpha)
                             .size(RATING_PLACEHOLDER_WIDTH),
-                        color = if (isSystemInDarkTheme()) ShimmerDarkGray else ShimmerMediumGray,
+                        color = if (isSystemInDarkTheme())
+                            ShimmerDarkGray else ShimmerMediumGray,
                         shape = RoundedCornerShape(size = SMALL_PADDING)
-                    ) {
-
-                    }
-
+                    ) {}
                     Spacer(modifier = Modifier.padding(all = SMALL_PADDING))
                 }
             }

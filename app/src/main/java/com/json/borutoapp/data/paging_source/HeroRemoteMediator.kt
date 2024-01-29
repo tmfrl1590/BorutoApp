@@ -1,6 +1,5 @@
 package com.json.borutoapp.data.paging_source
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -10,6 +9,9 @@ import com.json.borutoapp.data.local.BorutoDatabase
 import com.json.borutoapp.data.remote.BorutoApi
 import com.json.borutoapp.domain.model.Hero
 import com.json.borutoapp.domain.model.HeroRemoteKey
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
@@ -20,6 +22,20 @@ class HeroRemoteMediator @Inject constructor(
 
     private val heroDao = borutoDatabase.heroDao()
     private val heroRemoteKeyDao = borutoDatabase.heroRemoteKeyDao()
+
+    override suspend fun initialize(): InitializeAction {
+        val currentTime = System.currentTimeMillis()
+        val lastUpdated = heroRemoteKeyDao.getRemoteKey(heroId = 1)?.lastUpdated ?: 0L
+        val cacheTimeout = 1440
+
+        val diffInMinutes = (currentTime - lastUpdated) / 1000 / 60
+        return if (diffInMinutes.toInt() <= cacheTimeout) {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        }
+    }
+
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Hero>): MediatorResult {
         return try {
             val page = when (loadType) {
@@ -59,7 +75,7 @@ class HeroRemoteMediator @Inject constructor(
                             id = hero.id,
                             prevPage = prevPage,
                             nextPage = nextPage,
-                            //lastUpdated = response.lastUpdated
+                            lastUpdated = response.lastUpdated
                         )
                     }
                     heroRemoteKeyDao.addAllRemoteKeys(remoteKeys = keys)
@@ -91,13 +107,17 @@ class HeroRemoteMediator @Inject constructor(
             }
     }
 
-    private suspend fun getRemoteKeyForLastItem(
-        state: PagingState<Int, Hero>
-    ): HeroRemoteKey? {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Hero>): HeroRemoteKey? {
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { hero ->
                 heroRemoteKeyDao.getRemoteKey(heroId = hero.id)
             }
+    }
+
+    private fun parseMillis(millis: Long): String {
+        val date = Date(millis)
+        val format = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.ROOT)
+        return format.format(date)
     }
 
 }

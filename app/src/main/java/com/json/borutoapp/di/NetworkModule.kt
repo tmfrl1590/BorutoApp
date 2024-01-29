@@ -9,7 +9,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.serialization.ExperimentalSerializationApi
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -33,10 +32,10 @@ object NetworkModule {
             .addNetworkInterceptor(interceptor)
             .readTimeout(15, TimeUnit.MINUTES)
             .connectTimeout(15, TimeUnit.MINUTES)
+            .writeTimeout(15, TimeUnit.MINUTES)
             .build()
     }
 
-    @OptIn(ExperimentalSerializationApi::class)
     @Provides
     @Singleton
     fun provideRetrofitInstance(okHttpClient: OkHttpClient):Retrofit {
@@ -44,6 +43,7 @@ object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
+            //.addConverterFactory(Json.asConverterFactory(contentType))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

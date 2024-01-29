@@ -81,11 +81,12 @@ fun handlePagingResult(
 
         return when {
             loadState.refresh is LoadState.Loading -> {
+                println("반짝여야해!!!")
                 ShimmerEffect()
                 false
             }
             error != null -> {
-                //EmptyScreen(error = error)
+                EmptyScreen(error = error)
                 false
             }
             else -> true
