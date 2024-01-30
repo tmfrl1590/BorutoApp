@@ -8,6 +8,7 @@ import com.json.borutoapp.domain.use_case.UseCases
 import com.json.borutoapp.domain.use_case.get_all_heroes.GetAllHeroesUseCase
 import com.json.borutoapp.domain.use_case.read_onboarding.ReadOnBoardingUseCase
 import com.json.borutoapp.domain.use_case.save_onboarding.SaveOnBoardingUseCase
+import com.json.borutoapp.domain.use_case.search_heroes.SearchHeroesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +32,8 @@ object RepositoryModule {
         return UseCases(
             saveOnBoardingUseCase = SaveOnBoardingUseCase(repository = repository),
             readOnBoardingUseCase = ReadOnBoardingUseCase(repository = repository),
-            getAllHeroesUseCase = GetAllHeroesUseCase(repository = repository)
+            getAllHeroesUseCase = GetAllHeroesUseCase(repository = repository),
+            searchHeroesUseCase = SearchHeroesUseCase(repository = repository),
         )
     }
 }

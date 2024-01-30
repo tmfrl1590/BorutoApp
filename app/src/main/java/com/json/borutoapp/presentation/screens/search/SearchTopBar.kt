@@ -67,7 +67,7 @@ fun SearchWidget(
                 )
             },
             textStyle = TextStyle(
-                color = MaterialTheme.colorScheme.secondary
+                color = Color.White
             ),
             singleLine = true,
             leadingIcon = {
