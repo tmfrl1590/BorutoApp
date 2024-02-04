@@ -1,5 +1,6 @@
 package com.json.borutoapp.presentation.common
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,10 +27,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberAsyncImagePainter
 import com.json.borutoapp.domain.model.Hero
 import com.json.borutoapp.navigation.Screen
@@ -41,14 +45,15 @@ import com.json.borutoapp.ui.theme.MEDIUM_PADDING
 import com.json.borutoapp.ui.theme.SMALL_PADDING
 import com.json.borutoapp.util.Constants.BASE_URL
 
+@ExperimentalCoilApi
 @Composable
 fun ListContent(
     heroes: LazyPagingItems<Hero>,
-    navController: NavHostController,
+    navController: NavHostController
 ) {
     val result = handlePagingResult(heroes = heroes)
 
-    if(result){
+    if (result) {
         LazyColumn(
             contentPadding = PaddingValues(all = SMALL_PADDING),
             verticalArrangement = Arrangement.spacedBy(SMALL_PADDING)
@@ -85,7 +90,7 @@ fun handlePagingResult(
                 false
             }
             error != null -> {
-                EmptyScreen(error = error)
+                EmptyScreen(error = error, heroes = heroes)
                 false
             }
             heroes.itemCount < 1 -> {
@@ -97,11 +102,11 @@ fun handlePagingResult(
     }
 }
 
-
+@ExperimentalCoilApi
 @Composable
 fun HeroItem(
     hero: Hero,
-    navController: NavHostController,
+    navController: NavHostController
 ) {
     val painter = rememberAsyncImagePainter(model = "$BASE_URL${hero.image}")
 
@@ -111,49 +116,50 @@ fun HeroItem(
             .clickable {
                 navController.navigate(Screen.Details.passHeroId(heroId = hero.id))
             },
-        contentAlignment = Alignment.BottomStart,
-    ){
-        Surface(
-            shape = RoundedCornerShape(size = LARGE_PADDING),
-        ){
+        contentAlignment = Alignment.BottomStart
+    ) {
+        Surface(shape = RoundedCornerShape(size = LARGE_PADDING)) {
             Image(
                 modifier = Modifier.fillMaxSize(),
                 painter = painter,
                 contentDescription = "",
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Crop
             )
         }
-
         Surface(
             modifier = Modifier
                 .fillMaxHeight(0.4f)
                 .fillMaxWidth(),
-            contentColor = Color.Black.copy(alpha = ContentAlpha.medium),
+            color = Color.Black.copy(alpha = ContentAlpha.medium),
+            shape = RoundedCornerShape(
+                bottomStart = LARGE_PADDING,
+                bottomEnd = LARGE_PADDING
+            )
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(all = MEDIUM_PADDING)
-            ){
+            ) {
                 Text(
                     text = hero.name,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                    color = MaterialTheme.colorScheme.tertiary,
+                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = hero.about,
                     color = Color.White.copy(alpha = ContentAlpha.medium),
-                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                     maxLines = 3,
-                    overflow = TextOverflow.Ellipsis,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Row(
                     modifier = Modifier.padding(top = SMALL_PADDING),
-                    verticalAlignment = Alignment.CenterVertically,
-                ){
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     RatingWidget(
                         modifier = Modifier.padding(end = SMALL_PADDING),
                         rating = hero.rating
@@ -161,10 +167,54 @@ fun HeroItem(
                     Text(
                         text = "(${hero.rating})",
                         textAlign = TextAlign.Center,
-                        color = Color.White.copy(alpha = ContentAlpha.medium),
+                        color = Color.White.copy(alpha = ContentAlpha.medium)
                     )
                 }
             }
         }
     }
+}
+
+@ExperimentalCoilApi
+@Composable
+@Preview
+fun HeroItemPreview() {
+    HeroItem(
+        hero = Hero(
+            id = 1,
+            name = "Sasuke",
+            image = "",
+            about = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+            rating = 0.0,
+            power = 100,
+            month = "",
+            day = "",
+            family = listOf(),
+            abilities = listOf(),
+            natureTypes = listOf()
+        ),
+        navController = rememberNavController()
+    )
+}
+
+@ExperimentalCoilApi
+@Composable
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+fun HeroItemDarkPreview() {
+    HeroItem(
+        hero = Hero(
+            id = 1,
+            name = "Sasuke",
+            image = "",
+            about = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+            rating = 0.0,
+            power = 100,
+            month = "",
+            day = "",
+            family = listOf(),
+            abilities = listOf(),
+            natureTypes = listOf()
+        ),
+        navController = rememberNavController()
+    )
 }
